@@ -25,6 +25,14 @@ with zipfile.ZipFile(p) as z:
   a=r.get('A','').lower();b=r.get('B','');c=r.get('C','')
   if a and b:guj[a]=b
   if a and c:cities[a]=c
- out={'life':life,'gujarati':guj,'cities':cities}
+ actions={}
+ for r in list(rows(3))[1:]:
+  name=r.get('A','').strip().upper();action=r.get('B','').strip()
+  if name and action:actions[name]=action
+ dropdown=[]
+ for r in list(rows(4))[1:]:
+  value=r.get('A','').strip()
+  if value and value not in dropdown:dropdown.append(value)
+ out={'life':life,'gujarati':guj,'cities':cities,'actions':actions,'dropdown':dropdown}
  (p.parent/'master-data.json').write_text(json.dumps(out,ensure_ascii=False,separators=(',',':')),encoding='utf-8')
  print(f'Master generated: {len(life)} mappings, {len(guj)} Gujarati, {len(cities)} cities')
